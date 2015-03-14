@@ -1,0 +1,134 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package chat;
+
+import java.io.BufferedReader;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import static java.util.Collections.synchronizedMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import gnu.getopt.LongOpt;
+import gnu.getopt.Getopt;
+import java.io.IOException;
+
+public class Chat {
+
+    public static void main(String[] args) {
+        try {
+            String address=null;
+            boolean nio = false;
+            int port = 0;
+            boolean start = false;
+            boolean end = false;
+            Server server;
+            NIOChatServer server2;
+            Options(args, address, nio, port, start,end);
+            if(!end){
+                if(nio){
+                    server2 = new NIOChatServer(port, InetAddress.getByName(address));
+                    if(start)
+                        (new Thread(server2)).start();
+                }
+                else{
+                    server = new Server(port, InetAddress.getByName(address));
+                    if(start)
+                         server.start();
+                }
+            }
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void Options(String[] argv, String address, boolean nio, int port, boolean start, boolean end) {
+        LongOpt[] longopts = new LongOpt[5];
+
+        int c;
+
+        StringBuffer adress = new StringBuffer();
+        StringBuffer portt = new StringBuffer();
+        longopts[0] = new LongOpt("address", LongOpt.REQUIRED_ARGUMENT, adress, 'a');
+        longopts[1] = new LongOpt("help", LongOpt.NO_ARGUMENT, null, 'h');
+        longopts[2] = new LongOpt("nio", LongOpt.NO_ARGUMENT, null, 'n');
+        longopts[3] = new LongOpt("port", LongOpt.REQUIRED_ARGUMENT, portt, 'p');
+        longopts[4] = new LongOpt("server", LongOpt.NO_ARGUMENT, null, 's');
+        // 
+        Getopt g = new Getopt("ChatServer", argv, "a:hnp:s", longopts);
+        g.setOpterr(true);
+        //
+        boolean arg = false;
+        while ((c = g.getopt()) != -1) {
+            arg = true;
+            switch (c) {
+
+                case 'a':
+                    address = g.getOptarg();
+                    break;
+                //
+                case 'h':
+                    System.out.println("-a , -- address set the IP address\n"
+                            + "-h , -- help display this help and quit\n"
+                            + "-n , -- nio use NIOs for the server\n"
+                            + "-p , -- port = PORT set the port\n"
+                            + "-s , -- server start the server");
+                    break;
+
+                case 'n':
+                    nio = true;
+                    break;
+                //
+                case 'p':
+                    port = Integer.parseInt(g.getOptarg());
+                    break;
+                //
+                case 's':
+                    start = true;
+                    break;
+                //
+                case ':':
+                    System.out.println("You need an argument for option "
+                            + (char) g.getOptopt());
+                    end = true;
+                    break;
+                //
+                case '?':
+                    System.out.println("The option '" + (char) g.getOptopt()
+                            + "' is not valid");
+                    end = true;
+                    break;
+                //
+                default:
+                    System.out.println("Error");
+                    System.out.println("-a , -- address set the IP address\n"
+                            + "-h , -- help display this help and quit\n"
+                            + "-n , -- nio use NIOs for the server\n"
+                            + "-p , -- port = PORT set the port\n"
+                            + "-s , -- server start the server");
+                    end = true;
+                    break;
+            }
+        }
+        if(!arg){
+            System.out.println("Error : No Arguments");
+            System.out.println("-a , -- address set the IP address\n"
+                            + "-h , -- help display this help and quit\n"
+                            + "-n , -- nio use NIOs for the server\n"
+                            + "-p , -- port = PORT set the port\n"
+                            + "-s , -- server start the server");
+            end = true;
+        }
+    }
+
+}
