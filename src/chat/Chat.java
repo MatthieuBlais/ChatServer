@@ -20,29 +20,46 @@ import java.util.logging.Logger;
 import gnu.getopt.LongOpt;
 import gnu.getopt.Getopt;
 import java.io.IOException;
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
-public class Chat {
+public class Chat extends Application {
+
+    private TextField message;
+    private TextArea area;
 
     public static void main(String[] args) {
         try {
-            String address=null;
+            String address = null;
             boolean nio = false;
             int port = 0;
             boolean start = false;
             boolean end = false;
+            boolean interfac = false;
             Server server;
             NIOChatServer server2;
-            Options(args, address, nio, port, start,end);
-            if(!end){
-                if(nio){
+            Options(args, address, nio, port, start, end, interfac);
+            if(interfac) launch(args);
+            if (!end) {
+                if (nio) {
                     server2 = new NIOChatServer(port, InetAddress.getByName(address));
-                    if(start)
+                    if (start) {
                         (new Thread(server2)).start();
-                }
-                else{
+                    }
+                } else {
                     server = new Server(port, InetAddress.getByName(address));
-                    if(start)
-                         server.start();
+                    if (start) {
+                        server.start();
+                    }
                 }
             }
         } catch (UnknownHostException ex) {
@@ -52,8 +69,8 @@ public class Chat {
         }
     }
 
-    public static void Options(String[] argv, String address, boolean nio, int port, boolean start, boolean end) {
-        LongOpt[] longopts = new LongOpt[5];
+    public static void Options(String[] argv, String address, boolean nio, int port, boolean start, boolean end, boolean interfac) {
+        LongOpt[] longopts = new LongOpt[6];
 
         int c;
 
@@ -63,9 +80,10 @@ public class Chat {
         longopts[1] = new LongOpt("help", LongOpt.NO_ARGUMENT, null, 'h');
         longopts[2] = new LongOpt("nio", LongOpt.NO_ARGUMENT, null, 'n');
         longopts[3] = new LongOpt("port", LongOpt.REQUIRED_ARGUMENT, portt, 'p');
-        longopts[4] = new LongOpt("server", LongOpt.NO_ARGUMENT, null, 's');
+        longopts[4] = new LongOpt("interface", LongOpt.REQUIRED_ARGUMENT, null, 'p');
+        longopts[5] = new LongOpt("server", LongOpt.NO_ARGUMENT, null, 's');
         // 
-        Getopt g = new Getopt("ChatServer", argv, "a:hnp:s", longopts);
+        Getopt g = new Getopt("ChatServer", argv, "a:hnpc:s", longopts);
         g.setOpterr(true);
         //
         boolean arg = false;
@@ -82,6 +100,7 @@ public class Chat {
                             + "-h , -- help display this help and quit\n"
                             + "-n , -- nio use NIOs for the server\n"
                             + "-p , -- port = PORT set the port\n"
+                            + "-c , -- client option = Start interface\n"
                             + "-s , -- server start the server");
                     break;
 
@@ -95,6 +114,9 @@ public class Chat {
                 //
                 case 's':
                     start = true;
+                    break;
+                case 'c':
+                    interfac = true;
                     break;
                 //
                 case ':':
@@ -115,19 +137,75 @@ public class Chat {
                             + "-h , -- help display this help and quit\n"
                             + "-n , -- nio use NIOs for the server\n"
                             + "-p , -- port = PORT set the port\n"
+                            + "-c , -- client option = Start interface\n"
                             + "-s , -- server start the server");
                     end = true;
                     break;
             }
         }
-        if(!arg){
+        if (!arg) {
             System.out.println("Error : No Arguments");
             System.out.println("-a , -- address set the IP address\n"
-                            + "-h , -- help display this help and quit\n"
-                            + "-n , -- nio use NIOs for the server\n"
-                            + "-p , -- port = PORT set the port\n"
-                            + "-s , -- server start the server");
+                    + "-h , -- help display this help and quit\n"
+                    + "-n , -- nio use NIOs for the server\n"
+                    + "-p , -- port = PORT set the port\n"
+                    + "-c , -- client option = Start interface\n"
+                    + "-s , -- server start the server");
             end = true;
+        }
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Chat");
+        Button btn = new Button();
+        message = new TextField();
+        area = new TextArea();
+        btn.setText("Send Message");
+        area.setDisable(false);
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                if (message.getText().isEmpty()) {
+                } else {
+                    sendMessage(message.getText());
+                    message.setText("");
+                }
+            }
+        });
+
+        area.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                    Object newValue) {
+                area.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
+
+        Pane root = new Pane();
+        btn.setLayoutX(200);
+        btn.setLayoutY(220);
+        message.setLayoutX(10);
+        message.setLayoutY(220);
+        message.setPrefWidth(180);
+        area.setPrefWidth(280);
+        area.setPrefHeight(195);
+        area.setLayoutX(10);
+        area.setLayoutY(10);
+        root.getChildren().add(btn);
+        root.getChildren().add(area);
+        root.getChildren().add(message);
+        primaryStage.setScene(new Scene(root, 300, 250));
+        primaryStage.show();
+    }
+
+    public void sendMessage(String text) {
+        if (area.getText().isEmpty()) {
+            area.setText(text);
+        } else {
+            area.setText(area.getText() + "\n" + text);
         }
     }
 
