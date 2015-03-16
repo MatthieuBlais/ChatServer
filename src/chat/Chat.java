@@ -41,6 +41,7 @@ public class Chat extends Application {
     private static boolean client = true;
     private static int port = 0;
     private static boolean nio = false;
+    private static boolean multicast = false;
     private static String address = null;
 
     public static void main(String[] args) {
@@ -74,7 +75,7 @@ public class Chat extends Application {
     }
 
     public static void Options(String[] argv) {
-        LongOpt[] longopts = new LongOpt[5];
+        LongOpt[] longopts = new LongOpt[6];
 
         int c;
 
@@ -84,9 +85,10 @@ public class Chat extends Application {
         longopts[1] = new LongOpt("help", LongOpt.NO_ARGUMENT, null, 'h');
         longopts[2] = new LongOpt("nio", LongOpt.NO_ARGUMENT, null, 'n');
         longopts[3] = new LongOpt("port", LongOpt.REQUIRED_ARGUMENT, portt, 'p');
-        longopts[4] = new LongOpt("server", LongOpt.NO_ARGUMENT, null, 's');
+        longopts[4] = new LongOpt("multicast", LongOpt.NO_ARGUMENT, null, 'm');
+        longopts[5] = new LongOpt("server", LongOpt.NO_ARGUMENT, null, 's');
         // 
-        Getopt g = new Getopt("ChatServer", argv, "a:hnp:s", longopts);
+        Getopt g = new Getopt("ChatServer", argv, "a:hnp:ms", longopts);
         g.setOpterr(true);
         //
         boolean arg = false;
@@ -103,12 +105,16 @@ public class Chat extends Application {
                             + "-h , -- help display this help and quit\n"
                             + "-n , -- nio use NIOs for the server\n"
                             + "-p , -- port = PORT set the port\n"
-                            + "-c , -- client option = Start interface\n"
+                            + "-m , -- use multicast socket\n"
                             + "-s , -- server start the server");
                     break;
 
                 case 'n':
                     nio = true;
+                    break;
+                    
+                case 'm':
+                    multicast = true;
                     break;
                 //
                 case 'p':
@@ -138,6 +144,7 @@ public class Chat extends Application {
                             + "-h , -- help display this help and quit\n"
                             + "-n , -- nio use NIOs for the server\n"
                             + "-p , -- port = PORT set the port\n"
+                            + "-m , -- use multicast socket\n"
                             + "-s , -- server start the server");
                     end = true;
                     break;
@@ -149,6 +156,7 @@ public class Chat extends Application {
                     + "-h , -- help display this help and quit\n"
                     + "-n , -- nio use NIOs for the server\n"
                     + "-p , -- port = PORT set the port\n"
+                    + "-m , -- use multicast socket\n"
                     + "-s , -- server start the server");
             end = true;
         }
