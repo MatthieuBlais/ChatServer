@@ -38,7 +38,7 @@ public class Chat extends Application {
     private static TextArea area;
     private static boolean start = false;
     private static boolean end = false;
-    private static boolean interfac = false;
+    private static boolean client = true;
     private static int port = 0;
     private static boolean nio = false;
     private static String address = null;
@@ -52,7 +52,7 @@ public class Chat extends Application {
             Server server;
             NIOChatServer server2;
             Options(args);
-            if(interfac) launch(args);
+            if(client) launch(args);
             if (!end) {
                 if (nio) {
                     server2 = new NIOChatServer(port, InetAddress.getByName(address));
@@ -74,7 +74,7 @@ public class Chat extends Application {
     }
 
     public static void Options(String[] argv) {
-        LongOpt[] longopts = new LongOpt[6];
+        LongOpt[] longopts = new LongOpt[5];
 
         int c;
 
@@ -84,10 +84,9 @@ public class Chat extends Application {
         longopts[1] = new LongOpt("help", LongOpt.NO_ARGUMENT, null, 'h');
         longopts[2] = new LongOpt("nio", LongOpt.NO_ARGUMENT, null, 'n');
         longopts[3] = new LongOpt("port", LongOpt.REQUIRED_ARGUMENT, portt, 'p');
-        longopts[4] = new LongOpt("interface", LongOpt.NO_ARGUMENT, null, 'c');
-        longopts[5] = new LongOpt("server", LongOpt.NO_ARGUMENT, null, 's');
+        longopts[4] = new LongOpt("server", LongOpt.NO_ARGUMENT, null, 's');
         // 
-        Getopt g = new Getopt("ChatServer", argv, "a:hnp:cs", longopts);
+        Getopt g = new Getopt("ChatServer", argv, "a:hnp:s", longopts);
         g.setOpterr(true);
         //
         boolean arg = false;
@@ -118,9 +117,7 @@ public class Chat extends Application {
                 //
                 case 's':
                     start = true;
-                    break;
-                case 'c':
-                    interfac = true;
+                    client = false;
                     break;
                 //
                 case ':':
@@ -141,7 +138,6 @@ public class Chat extends Application {
                             + "-h , -- help display this help and quit\n"
                             + "-n , -- nio use NIOs for the server\n"
                             + "-p , -- port = PORT set the port\n"
-                            + "-c , -- client option = Start interface\n"
                             + "-s , -- server start the server");
                     end = true;
                     break;
@@ -153,7 +149,6 @@ public class Chat extends Application {
                     + "-h , -- help display this help and quit\n"
                     + "-n , -- nio use NIOs for the server\n"
                     + "-p , -- port = PORT set the port\n"
-                    + "-c , -- client option = Start interface\n"
                     + "-s , -- server start the server");
             end = true;
         }
