@@ -27,6 +27,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -35,7 +36,10 @@ import javafx.stage.Stage;
 public class Chat extends Application {
 
     private static TextField message;
+    private static TextField portTextField;
+    private static TextField ipTextField;
     private static TextArea area;
+    private static TextArea Buddyarea;
     private static boolean start = false;
     private static boolean end = false;
     private static boolean client = true;
@@ -166,10 +170,17 @@ public class Chat extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Chat");
         Button btn = new Button();
+        Button btnConnexion = new Button("Connection");
         message = new TextField();
+        ipTextField = new TextField();
+        portTextField = new TextField();
+        Buddyarea = new TextArea();
+        Label ipLabel = new Label("Server IP");
+        Label portLabel = new Label("Server port");
         area = new TextArea();
         btn.setText("Send Message");
-        area.setDisable(false);
+        area.setEditable(false);
+        Buddyarea.setEditable(false);
         btn.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -178,6 +189,17 @@ public class Chat extends Application {
                 } else {
                     sendMessage(message.getText());
                     message.setText("");
+                }
+            }
+        });
+        
+        btnConnexion.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                if (!ipTextField.getText().isEmpty() && !portTextField.getText().isEmpty()) {
+                } else {
+                    //Connexion
                 }
             }
         });
@@ -192,19 +214,42 @@ public class Chat extends Application {
         });
 
         Pane root = new Pane();
-        btn.setLayoutX(200);
-        btn.setLayoutY(220);
+        btn.setLayoutX(300);
+        btn.setLayoutY(320);
+         btnConnexion.setLayoutX(250);
+        btnConnexion.setLayoutY(30);
+        btnConnexion.setPrefWidth(140);
         message.setLayoutX(10);
-        message.setLayoutY(220);
-        message.setPrefWidth(180);
-        area.setPrefWidth(280);
-        area.setPrefHeight(195);
+        message.setLayoutY(320);
+        message.setPrefWidth(280);
+        ipTextField.setLayoutX(10);
+        ipTextField.setLayoutY(30);
+        ipTextField.setPrefWidth(150);
+        portTextField.setLayoutX(170);
+        portTextField.setLayoutY(30);
+        portTextField.setPrefWidth(70);
+        area.setPrefWidth(380);
+        area.setPrefHeight(235);
         area.setLayoutX(10);
-        area.setLayoutY(10);
+        area.setLayoutY(70);
+        Buddyarea.setPrefHeight(330);
+         Buddyarea.setPrefWidth(130);
+          Buddyarea.setLayoutX(400);
+        Buddyarea.setLayoutY(10);
+        ipLabel.setLayoutX(60);
+        ipLabel.setLayoutY(7);
+        portLabel.setLayoutX(175);
+        portLabel.setLayoutY(7);
         root.getChildren().add(btn);
         root.getChildren().add(area);
+        root.getChildren().add(ipTextField);
+        root.getChildren().add(ipLabel);
+        root.getChildren().add(portLabel);
+        root.getChildren().add(btnConnexion);
+        root.getChildren().add(portTextField);
         root.getChildren().add(message);
-        primaryStage.setScene(new Scene(root, 300, 250));
+        root.getChildren().add(Buddyarea);
+        primaryStage.setScene(new Scene(root, 540, 350));
         primaryStage.show();
     }
 
