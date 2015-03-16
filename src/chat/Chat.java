@@ -34,20 +34,24 @@ import javafx.stage.Stage;
 
 public class Chat extends Application {
 
-    private TextField message;
-    private TextArea area;
+    private static TextField message;
+    private static TextArea area;
+    private static boolean start = false;
+    private static boolean end = false;
+    private static boolean interfac = false;
+    private static int port = 0;
+    private static boolean nio = false;
+    private static String address = null;
 
     public static void main(String[] args) {
         try {
-            String address = null;
-            boolean nio = false;
-            int port = 0;
-            boolean start = false;
-            boolean end = false;
-            boolean interfac = false;
+            
+            
+            
+
             Server server;
             NIOChatServer server2;
-            Options(args, address, nio, port, start, end, interfac);
+            Options(args);
             if(interfac) launch(args);
             if (!end) {
                 if (nio) {
@@ -69,7 +73,7 @@ public class Chat extends Application {
         }
     }
 
-    public static void Options(String[] argv, String address, boolean nio, int port, boolean start, boolean end, boolean interfac) {
+    public static void Options(String[] argv) {
         LongOpt[] longopts = new LongOpt[6];
 
         int c;
@@ -80,10 +84,10 @@ public class Chat extends Application {
         longopts[1] = new LongOpt("help", LongOpt.NO_ARGUMENT, null, 'h');
         longopts[2] = new LongOpt("nio", LongOpt.NO_ARGUMENT, null, 'n');
         longopts[3] = new LongOpt("port", LongOpt.REQUIRED_ARGUMENT, portt, 'p');
-        longopts[4] = new LongOpt("interface", LongOpt.REQUIRED_ARGUMENT, null, 'p');
+        longopts[4] = new LongOpt("interface", LongOpt.NO_ARGUMENT, null, 'c');
         longopts[5] = new LongOpt("server", LongOpt.NO_ARGUMENT, null, 's');
         // 
-        Getopt g = new Getopt("ChatServer", argv, "a:hnpc:s", longopts);
+        Getopt g = new Getopt("ChatServer", argv, "a:hnp:cs", longopts);
         g.setOpterr(true);
         //
         boolean arg = false;
