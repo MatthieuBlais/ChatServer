@@ -46,5 +46,4 @@ public abstract class AbstractMultichatServer implements MultiChatServer{
         return nick;
     }
     
-    
 }

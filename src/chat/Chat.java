@@ -21,6 +21,7 @@ import gnu.getopt.LongOpt;
 import gnu.getopt.Getopt;
 import java.io.IOException;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -32,14 +33,16 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Chat extends Application {
 
-    private static TextField message;
+   private static TextField message;
     private static TextField portTextField;
     private static TextField ipTextField;
     private static TextArea area;
     private static TextArea Buddyarea;
+    private static Button btn;
     private static boolean start = false;
     private static boolean end = false;
     private static boolean client = true;
@@ -47,37 +50,71 @@ public class Chat extends Application {
     private static boolean nio = false;
     private static boolean multicast = false;
     private static String address = null;
-
+    private static ClientSocket cl;
+    private static MultiCastClient mcl;
+    
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
-        try {
-            
-            
-            
-
-            Server server;
+         try {
+            port = 80;
+            address = "127.0.0.1";
+            btn = new Button();
+            message = new TextField();
+            area = new TextArea();
+            Buddyarea = new TextArea();
             NIOChatServer server2;
+            
+         //   m = synchronizedMap(new HashMap<>());
+        //   nick = synchronizedMap(new HashMap<>());
+
+           // Server server;
+          //  NIOChatServer server2;
+            
             Options(args);
-            if(client) launch(args);
+
             if (!end) {
+                System.out.println("okk");
+                if(multicast){
+                    mcl = new MultiCastClient(message, btn, area, Buddyarea);
+                    launch(args);
+                }
+                else{
                 if (nio) {
                     server2 = new NIOChatServer(port, InetAddress.getByName(address));
+                    server2.start();
                     if (start) {
+                        System.out.println("pp");
                         (new Thread(server2)).start();
                     }
-                } else {
-                    server = new Server(port, InetAddress.getByName(address));
-                    if (start) {
-                        server.start();
+                } else { 
+                    if (start && !client) {
+                      // TODO code application logic here
+            SocketServer s = new SocketServer(2000, InetAddress.getByName(address));
+            s.start();
                     }
+                    else{
+                        System.out.println("ok3");
+                     //   ChatThread chatt = new ChatThread(client,getMMap(),getNickMap());
+                    //    new Thread(chatt).start();
+                    }
+                    if(client){
+                        cl = new ClientSocket(port, InetAddress.getByName(address), btn, message, area, Buddyarea);
+                         launch(args);
+            }
                 }
             }
+            }
+        
+            
         } catch (UnknownHostException ex) {
-            Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(chat.Chat.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(chat.Chat.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public static void Options(String[] argv) {
         LongOpt[] longopts = new LongOpt[6];
 
@@ -163,35 +200,26 @@ public class Chat extends Application {
                     + "-m , -- use multicast socket\n"
                     + "-s , -- server start the server");
             end = true;
+            
         }
     }
 
-    @Override
+    
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Chat");
-        Button btn = new Button();
+        
         Button btnConnexion = new Button("Connection");
-        message = new TextField();
+        //message = new TextField();
         ipTextField = new TextField();
         portTextField = new TextField();
-        Buddyarea = new TextArea();
+        
         Label ipLabel = new Label("Server IP");
         Label portLabel = new Label("Server port");
-        area = new TextArea();
+        
         btn.setText("Send Message");
         area.setEditable(false);
         Buddyarea.setEditable(false);
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                if (message.getText().isEmpty()) {
-                } else {
-                    sendMessage(message.getText());
-                    message.setText("");
-                }
-            }
-        });
+        
         
         btnConnexion.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -203,15 +231,18 @@ public class Chat extends Application {
                 }
             }
         });
-
-        area.textProperty().addListener(new ChangeListener<Object>() {
-            @Override
-            public void changed(ObservableValue<?> observable, Object oldValue,
-                    Object newValue) {
-                area.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
-                //use Double.MIN_VALUE to scroll to the top
-            }
-        });
+        
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+          public void handle(WindowEvent we) {
+              if(!multicast)
+              cl.setExit();
+              else
+                  mcl.setExit();
+             
+              System.exit(0);
+          }
+      });        
+        
 
         Pane root = new Pane();
         btn.setLayoutX(300);
@@ -253,12 +284,12 @@ public class Chat extends Application {
         primaryStage.show();
     }
 
-    public void sendMessage(String text) {
+   /* public void sendMessage(String text) {
         if (area.getText().isEmpty()) {
             area.setText(text);
         } else {
             area.setText(area.getText() + "\n" + text);
         }
-    }
-
+    }*/
+    
 }
