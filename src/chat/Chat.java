@@ -58,7 +58,7 @@ public class Chat extends Application {
      */
     public static void main(String[] args) {
          try {
-            port = 80;
+            port = 2000;
             address = "127.0.0.1";
             btn = new Button();
             message = new TextField();
