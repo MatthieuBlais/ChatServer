@@ -40,8 +40,6 @@ import javafx.stage.WindowEvent;
 public class Chat extends Application {
 
    private static TextField message;
-    private static TextField portTextField;
-    private static TextField ipTextField;
     private static TextArea area;
     private static TextArea Buddyarea;
     private static Button btn;
@@ -211,29 +209,12 @@ public class Chat extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Chat");
         
-        Button btnConnexion = new Button("Connection");
-        //message = new TextField();
-        ipTextField = new TextField();
-        portTextField = new TextField();
         
-        Label ipLabel = new Label("Server IP");
-        Label portLabel = new Label("Server port");
-        
+        Label welcome = new Label(Internationalization.get("my.welcome"));
         btn.setText(Internationalization.get("my.send"));
         area.setEditable(false);
         Buddyarea.setEditable(false);
         
-        
-        btnConnexion.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                if (!ipTextField.getText().isEmpty() && !portTextField.getText().isEmpty()) {
-                } else {
-                    //Connexion
-                }
-            }
-        });
         
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
           public void handle(WindowEvent we) {
@@ -248,39 +229,24 @@ public class Chat extends Application {
         
 
         Pane root = new Pane();
-        btn.setLayoutX(300);
+        btn.setLayoutX(280);
         btn.setLayoutY(320);
-         btnConnexion.setLayoutX(250);
-        btnConnexion.setLayoutY(30);
-        btnConnexion.setPrefWidth(140);
         message.setLayoutX(10);
         message.setLayoutY(320);
-        message.setPrefWidth(280);
-        ipTextField.setLayoutX(10);
-        ipTextField.setLayoutY(30);
-        ipTextField.setPrefWidth(150);
-        portTextField.setLayoutX(170);
-        portTextField.setLayoutY(30);
-        portTextField.setPrefWidth(70);
+        message.setPrefWidth(260);
         area.setPrefWidth(380);
-        area.setPrefHeight(235);
+        area.setPrefHeight(285);
         area.setLayoutX(10);
-        area.setLayoutY(70);
-        Buddyarea.setPrefHeight(330);
+        area.setLayoutY(30);
+        welcome.setLayoutX(200);
+        welcome.setLayoutY(6);
+        Buddyarea.setPrefHeight(310);
          Buddyarea.setPrefWidth(130);
           Buddyarea.setLayoutX(400);
-        Buddyarea.setLayoutY(10);
-        ipLabel.setLayoutX(60);
-        ipLabel.setLayoutY(7);
-        portLabel.setLayoutX(175);
-        portLabel.setLayoutY(7);
+        Buddyarea.setLayoutY(30);
         root.getChildren().add(btn);
         root.getChildren().add(area);
-        root.getChildren().add(ipTextField);
-        root.getChildren().add(ipLabel);
-        root.getChildren().add(portLabel);
-        root.getChildren().add(btnConnexion);
-        root.getChildren().add(portTextField);
+        root.getChildren().add(welcome);
         root.getChildren().add(message);
         root.getChildren().add(Buddyarea);
         primaryStage.setScene(new Scene(root, 540, 350));

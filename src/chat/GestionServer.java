@@ -36,9 +36,9 @@ public class GestionServer{
     }
 
     public void addClient(SocketClient c) {
-        nickMap.put(c, "Guest"/*c.getSocket().getInetAddress().getHostAddress() + ":" + String.valueOf(compteur)*/);
-        c.setName("Guest"/*c.getSocket().getInetAddress().getHostAddress() + ":" + String.valueOf(compteur)*/);
-        c.sendMessage("Welcome on Chat Server ECE1.0");
+        nickMap.put(c, Internationalization.get("my.guest")/*c.getSocket().getInetAddress().getHostAddress() + ":" + String.valueOf(compteur)*/);
+        c.setName(Internationalization.get("my.guest")/*c.getSocket().getInetAddress().getHostAddress() + ":" + String.valueOf(compteur)*/);
+        c.sendMessage(Internationalization.get("my.welcome"));
         buddy();
         compteur++;
     }
@@ -68,7 +68,7 @@ public class GestionServer{
             }    
         }
         else{
-            message = tmp[0]+ "~~&~&" + setNick(c) + "##" + "New name : "+ setNick(c);
+            message = tmp[0]+ "~~&~&" + setNick(c) + "##" + Internationalization.get("my.newName") + " : "+ setNick(c);
             System.out.println("message");
             for (Entry<SocketClient, String> entry : nickMap.entrySet()) {
                     
@@ -90,9 +90,9 @@ public class GestionServer{
                 message = tmp[0]+ "~~&~&" + setNick(c) +"@~~@~~ aze";
             } else if(tmp[1].equals("/Iconnect/")){
                 System.out.println("BALALALAsdfsdfsd");
-                message = tmp[0]+ "~~&~&" + setNick(c) +"&~=====>" + setNick(c) +" has join the chat";
+                message = tmp[0]+ "~~&~&" + setNick(c) +"&~=====>" + setNick(c) +" " + Internationalization.get("my.hasjoin");
             } else if(tmp[1].equals("/Ileave/")){
-                message = tmp[0]+ "~~&~&" + setNick(c) +"_____" + setNick(c) +" has left the chat";
+                message = tmp[0]+ "~~&~&" + setNick(c) +"_____" + setNick(c) +" " + Internationalization.get("my.hasleft");
                 
                 deleteClient(c);
             }

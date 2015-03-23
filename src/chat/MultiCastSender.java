@@ -39,7 +39,7 @@ public class MultiCastSender {
         txt = text;
         random = new SecureRandom();
         ID = SessionId();
-        name = "Guest";
+        name = Internationalization.get("my.guest");
         this.address = address;
         this.btn = btn;
         this.port = port;
@@ -102,7 +102,7 @@ public class MultiCastSender {
             DatagramPacket outPacket = null;
             InetAddress addresse = InetAddress.getByName(address);
           
-                String text = ID + "~##~" + name + "</>" + "Welcome " + name + " on the ECE channel";
+                String text = ID + "~##~" + name + "</>" + Internationalization.get("my.welcome2") + " " + name + " " + Internationalization.get("my.onchat");
                     outBuf = text.getBytes();
                     outPacket = new DatagramPacket(outBuf, outBuf.length, addresse, port);
 
@@ -123,7 +123,7 @@ public class MultiCastSender {
             DatagramPacket outPacket = null;
             InetAddress addresse = InetAddress.getByName(address);
           
-                String text = ID + "><<|>><" + name + "</>" + name +" has left the channel";
+                String text = ID + "><<|>><" + name + "</>" + name +" " + Internationalization.get("my.hasleft");
 
                     outBuf = text.getBytes();
                     outPacket = new DatagramPacket(outBuf, outBuf.length, addresse, port);

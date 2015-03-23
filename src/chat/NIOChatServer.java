@@ -112,11 +112,11 @@ public class NIOChatServer extends AbstractMultichatServer implements Runnable {
 
     private void handleAccept(SelectionKey key) throws IOException {
         SocketChannel sc = ((ServerSocketChannel) key.channel()).accept();
-        nickMap.put(sc, "Guest");
+        nickMap.put(sc, Internationalization.get("my.guest"));
         System.err.println("jai ajoute " + nickMap.get(sc));
         sc.configureBlocking(false);
         sc.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE, getAddress());
-        sc.write(ByteBuffer.wrap("Welcome on the ECE Chat 1.0\n".getBytes()));
+        sc.write(ByteBuffer.wrap((Internationalization.get("my.welcome") + "\n").getBytes()));
     }
 
     public void deleteClient(SocketChannel c) {
@@ -179,9 +179,9 @@ public class NIOChatServer extends AbstractMultichatServer implements Runnable {
                                 msg = tmp[0] + "~~&~&" + nickMap.get(ch) + "@~~@~~ aze";
                             } else if (tmp[1].equals("/Iconnect/")) {
                                 System.out.println("BALALALAsdfsdfsd");
-                                msg = tmp[0] + "~~&~&" + nickMap.get(ch) + "&~=====>" + nickMap.get(ch) + " has join the chat";
+                                msg = tmp[0] + "~~&~&" + nickMap.get(ch) + "&~=====>" + nickMap.get(ch) +" " + Internationalization.get("my.hasjoin");
                             } else if (tmp[1].equals("/Ileave/")) {
-                                msg = tmp[0] + "~~&~&" + nickMap.get(ch) + "_____" + nickMap.get(ch) + " has left the chat";
+                                msg = tmp[0] + "~~&~&" + nickMap.get(ch) + "_____" + nickMap.get(ch) +" " + Internationalization.get("my.hasleft");
 
                             //    deleteClient(ch);
                             }

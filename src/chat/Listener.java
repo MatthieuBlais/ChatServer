@@ -41,7 +41,7 @@ public class Listener extends Thread {
         this.bud = bud;
         this.cs = cs;
         collection = new HashMap<String, String>();
-        prev = "Guest";
+        prev = Internationalization.get("my.guest");
 
         area.textProperty().addListener(new ChangeListener<Object>() {
             @Override
