@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 import gnu.getopt.LongOpt;
 import gnu.getopt.Getopt;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
@@ -51,6 +53,7 @@ public class Chat extends Application {
     private static boolean multicast = false;
     private static String address = null;
     private static ClientSocket cl;
+    
     private static MultiCastClient mcl;
     
     /**
@@ -142,12 +145,12 @@ public class Chat extends Application {
                     break;
                 //
                 case 'h':
-                    System.out.println("-a , -- address set the IP address\n"
-                            + "-h , -- help display this help and quit\n"
-                            + "-n , -- nio use NIOs for the server\n"
-                            + "-p , -- port = PORT set the port\n"
-                            + "-m , -- use multicast socket\n"
-                            + "-s , -- server start the server");
+                    System.out.println(Internationalization.get("my.command1") 
+                            + Internationalization.get("my.command2") 
+                            + Internationalization.get("my.command3") 
+                            + Internationalization.get("my.command4") 
+                            + Internationalization.get("my.command5") 
+                            + Internationalization.get("my.command6") );
                     break;
 
                 case 'n':
@@ -181,24 +184,24 @@ public class Chat extends Application {
                 //
                 default:
                     System.out.println("Error");
-                    System.out.println("-a , -- address set the IP address\n"
-                            + "-h , -- help display this help and quit\n"
-                            + "-n , -- nio use NIOs for the server\n"
-                            + "-p , -- port = PORT set the port\n"
-                            + "-m , -- use multicast socket\n"
-                            + "-s , -- server start the server");
+                    System.out.println(Internationalization.get("my.command1") 
+                            + Internationalization.get("my.command2") 
+                            + Internationalization.get("my.command3") 
+                            + Internationalization.get("my.command4") 
+                            + Internationalization.get("my.command5") 
+                            + Internationalization.get("my.command6") );
                     end = true;
                     break;
             }
         }
         if (!arg) {
             System.out.println("Error : No Arguments");
-            System.out.println("-a , -- address set the IP address\n"
-                    + "-h , -- help display this help and quit\n"
-                    + "-n , -- nio use NIOs for the server\n"
-                    + "-p , -- port = PORT set the port\n"
-                    + "-m , -- use multicast socket\n"
-                    + "-s , -- server start the server");
+            System.out.println(Internationalization.get("my.command1") 
+                            + Internationalization.get("my.command2") 
+                            + Internationalization.get("my.command3") 
+                            + Internationalization.get("my.command4") 
+                            + Internationalization.get("my.command5") 
+                            + Internationalization.get("my.command6") );
             end = true;
             
         }
@@ -216,7 +219,7 @@ public class Chat extends Application {
         Label ipLabel = new Label("Server IP");
         Label portLabel = new Label("Server port");
         
-        btn.setText("Send Message");
+        btn.setText(Internationalization.get("my.send"));
         area.setEditable(false);
         Buddyarea.setEditable(false);
         
