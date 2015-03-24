@@ -15,6 +15,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -39,7 +41,12 @@ public class ClientSocket {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            Alert al = new Alert(AlertType.ERROR);
+          al.setTitle("Error Dialog");
+          al.setHeaderText("Look, an Error Dialog");
+          al.setContentText(ioe.getMessage());
+
+          al.showAndWait();
             System.exit(-1);
         }
         
@@ -67,6 +74,12 @@ public class ClientSocket {
             in.close();
             socket.close();
         } catch (IOException ex) {
+          Alert a = new Alert(AlertType.ERROR);
+          a.setTitle("Error Dialog");
+          a.setHeaderText("Look, an Error Dialog");
+          a.setContentText(ex.getMessage());
+
+          a.showAndWait();
             Logger.getLogger(ClientSocket.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

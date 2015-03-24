@@ -82,7 +82,7 @@ public class Chat extends Application {
             if (!end) {
              //   System.out.println("okk");
                 if(multicast){
-                    mcl = new MultiCastClient(message, btn, area, Buddyarea);
+                    
                     launch(args);
                 }
                 else{
@@ -105,8 +105,8 @@ public class Chat extends Application {
                     //    new Thread(chatt).start();
                     }
                     if(client){
-                        cl = new ClientSocket(port, InetAddress.getByName(address), btn, message, area, Buddyarea);
-                         launch(args);
+                        launch(args);
+                                                 
             }
                 }
             }
@@ -254,6 +254,15 @@ public class Chat extends Application {
         root.getChildren().add(message);
         root.getChildren().add(Buddyarea);
         primaryStage.setScene(new Scene(root, 540, 350));
+       try {
+           if(multicast)
+           mcl = new MultiCastClient(message, btn, area, Buddyarea);
+           else if(client)
+           cl = new ClientSocket(port, InetAddress.getByName(address), btn, message, area, Buddyarea);
+       } catch (UnknownHostException ex) {
+           Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
+       }
+
         primaryStage.show();
     }
 
