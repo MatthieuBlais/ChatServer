@@ -26,7 +26,7 @@ public class Message extends Thread{
     private Socket socket;
     
  
-    public Message(SocketClient c, GestionServer g)
+    public Message(SocketClient c, GestionServer g, boolean d)
     {
         try {
             gestion = g;
@@ -34,6 +34,7 @@ public class Message extends Thread{
            socket = c.getSocket();
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException ex) {
+            if(d)
             Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

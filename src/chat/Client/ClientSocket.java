@@ -31,9 +31,10 @@ public class ClientSocket {
     private Socket socket;
     private BufferedReader in;
     private Sender sender;
+    private boolean debug;
     
-    public ClientSocket(int port, InetAddress a, Button btn, TextField message, TextArea area, TextArea buddy) {
-  
+    public ClientSocket(int port, InetAddress a, Button btn, TextField message, TextArea area, TextArea buddy, boolean deb) {
+        debug = deb;
         out = null;
         try {
             // Connect to Nakov Chat Server
@@ -76,10 +77,11 @@ public class ClientSocket {
         } catch (IOException ex) {
           Alert a = new Alert(AlertType.ERROR);
           a.setTitle("Error Dialog");
-          a.setHeaderText("Look, an Error Dialog");
+          a.setHeaderText("Error");
           a.setContentText(ex.getMessage());
 
           a.showAndWait();
+          if(debug)
             Logger.getLogger(ClientSocket.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

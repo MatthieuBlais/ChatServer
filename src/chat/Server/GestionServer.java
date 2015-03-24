@@ -5,6 +5,7 @@
  */
 package chat.Server;
 
+import chat.Internationalization;
 import java.io.BufferedReader;
 import java.net.Socket;
 import static java.util.Collections.synchronizedMap;

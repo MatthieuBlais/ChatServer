@@ -17,11 +17,11 @@ public class SocketClient {
     private Message message = null;
     private sentMessage receive = null;
     
-    public SocketClient(Socket s, GestionServer g){
+    public SocketClient(Socket s, GestionServer g, boolean b){
         client = s;
         name = client.getInetAddress().getHostAddress();
         receive = new sentMessage(s);
-        message = new Message(this,g);
+        message = new Message(this,g,b);
     }
  /*   public ClientListener mClientListener = null;
     public ClientSender mClientSender = null;*/

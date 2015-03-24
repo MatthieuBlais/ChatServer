@@ -19,6 +19,8 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 
 /**
@@ -33,11 +35,13 @@ public class MultiCastReceiver implements Runnable {
     private HashMap<String, String> collection; 
     private TextArea bud;
     private MultiCastClient mcc;
+    private boolean b;
     
-    public MultiCastReceiver(TextArea area, String adress, int port, TextArea bud, MultiCastClient c){
+    public MultiCastReceiver(TextArea area, String adress, int port, TextArea bud, MultiCastClient c, boolean de){
         this.area = area;
         this.adress = adress;
         this.port = port;
+        b = de;
         this.bud = bud;
         mcc = c;
         collection =  new HashMap<String,String>() ;
@@ -89,7 +93,12 @@ public class MultiCastReceiver implements Runnable {
 });
       }
     } catch (IOException ioe) {
-      System.out.println(ioe);
+     Alert a = new Alert(AlertType.ERROR);
+          a.setTitle("Error Dialog");
+          a.setHeaderText("Error");
+          a.setContentText(ioe.getMessage());
+          if(b)
+              System.out.println(ioe.getMessage());
     }    
     }
     

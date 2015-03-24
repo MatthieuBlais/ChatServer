@@ -55,6 +55,7 @@ public class Chat extends Application {
     private static boolean multicast = false;
     private static String address = null;
     private static ClientSocket cl;
+    private static boolean debug = false;
     
     private static MultiCastClient mcl;
     
@@ -87,7 +88,7 @@ public class Chat extends Application {
                 }
                 else{
                 if (nio) {
-                    server2 = new NIOChatServer(port, InetAddress.getByName(address));
+                    server2 = new NIOChatServer(port, InetAddress.getByName(address),debug);
                     server2.start();
                     if (start) {
                 //        System.out.println("pp");
@@ -96,7 +97,7 @@ public class Chat extends Application {
                 } else { 
                     if (start && !client) {
                       // TODO code application logic here
-            SocketServer s = new SocketServer(2000, InetAddress.getByName(address));
+            SocketServer s = new SocketServer(2000, InetAddress.getByName(address),debug);
             s.start();
                     }
                     else{
@@ -121,7 +122,7 @@ public class Chat extends Application {
     }
     
     public static void Options(String[] argv) {
-        LongOpt[] longopts = new LongOpt[6];
+        LongOpt[] longopts = new LongOpt[7];
 
         int c;
 
@@ -133,8 +134,9 @@ public class Chat extends Application {
         longopts[3] = new LongOpt("port", LongOpt.REQUIRED_ARGUMENT, portt, 'p');
         longopts[4] = new LongOpt("multicast", LongOpt.NO_ARGUMENT, null, 'm');
         longopts[5] = new LongOpt("server", LongOpt.NO_ARGUMENT, null, 's');
+        longopts[6] = new LongOpt("debug", LongOpt.REQUIRED_ARGUMENT, adress, 'd');
         // 
-        Getopt g = new Getopt("ChatServer", argv, "a:hnp:ms", longopts);
+        Getopt g = new Getopt("ChatServer", argv, "a:hnp:msd", longopts);
         g.setOpterr(true);
         //
         boolean arg = false;
@@ -171,6 +173,10 @@ public class Chat extends Application {
                     start = true;
                     client = false;
                     break;
+                
+                case 'd':
+                    debug = true;
+                    break;
                 //
                 case ':':
                     System.out.println("You need an argument for option "
@@ -185,8 +191,9 @@ public class Chat extends Application {
                     break;
                 //
                 default:
-                    System.out.println("Error");
-                    System.out.println(Internationalization.get("my.command1") 
+                    System.out.println(Internationalization.get("my.command0") 
+                    + Internationalization.get("my.command1") 
+                    +Internationalization.get("my.command7") 
                             + Internationalization.get("my.command2") 
                             + Internationalization.get("my.command3") 
                             + Internationalization.get("my.command4") 
@@ -197,8 +204,9 @@ public class Chat extends Application {
             }
         }
         if (!arg) {
-            System.out.println("Error : No Arguments");
-            System.out.println(Internationalization.get("my.command1") 
+            System.out.println(Internationalization.get("my.command0") 
+                    + Internationalization.get("my.command1") 
+                    +Internationalization.get("my.command7") 
                             + Internationalization.get("my.command2") 
                             + Internationalization.get("my.command3") 
                             + Internationalization.get("my.command4") 
@@ -256,9 +264,9 @@ public class Chat extends Application {
         primaryStage.setScene(new Scene(root, 540, 350));
        try {
            if(multicast)
-           mcl = new MultiCastClient(message, btn, area, Buddyarea);
+           mcl = new MultiCastClient(message, btn, area, Buddyarea, debug);
            else if(client)
-           cl = new ClientSocket(port, InetAddress.getByName(address), btn, message, area, Buddyarea);
+           cl = new ClientSocket(port, InetAddress.getByName(address), btn, message, area, Buddyarea,debug);
        } catch (UnknownHostException ex) {
            Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
        }

@@ -5,6 +5,7 @@
  */
 package chat.Client;
 
+import chat.Internationalization;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.DatagramPacket;
@@ -36,10 +37,12 @@ public class MultiCastSender {
     private boolean leave = false;
     private String address;
     private int port;
+    private boolean debug;
 
-    public MultiCastSender(TextField text, Button btn, String address, int port) {
+    public MultiCastSender(TextField text, Button btn, String address, int port,boolean b) {
         txt = text;
         random = new SecureRandom();
+        debug =b;
         ID = SessionId();
         name = Internationalization.get("my.guest");
         this.address = address;
@@ -75,8 +78,10 @@ public class MultiCastSender {
                     }                
                     socket.close();
                 } catch (UnknownHostException ex) {
+                    if(debug)
                     Logger.getLogger(MultiCastSender.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
+                    if(debug)
                     Logger.getLogger(MultiCastSender.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
@@ -111,8 +116,22 @@ public class MultiCastSender {
                     socket.send(outPacket);
 
         } catch (UnknownHostException ex) {
+            Alert a = new Alert(AlertType.ERROR);
+          a.setTitle("Error Dialog");
+          a.setHeaderText("Look, an Error Dialog");
+          a.setContentText(ex.getMessage());
+
+          a.showAndWait();
+            if(debug)
             Logger.getLogger(MultiCastSender.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            Alert a = new Alert(AlertType.ERROR);
+          a.setTitle("Error Dialog");
+          a.setHeaderText("Look, an Error Dialog");
+          a.setContentText(ex.getMessage());
+
+          a.showAndWait();
+            if(debug)
             Logger.getLogger(MultiCastSender.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -133,8 +152,22 @@ public class MultiCastSender {
                     socket.send(outPacket);
 
         } catch (UnknownHostException ex) {
+            Alert a = new Alert(AlertType.ERROR);
+          a.setTitle("Error Dialog");
+          a.setHeaderText("Look, an Error Dialog");
+          a.setContentText(ex.getMessage());
+
+          a.showAndWait();
+            if(debug)
             Logger.getLogger(MultiCastSender.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            Alert a = new Alert(AlertType.ERROR);
+          a.setTitle("Error Dialog");
+          a.setHeaderText("Look, an Error Dialog");
+          a.setContentText(ex.getMessage());
+
+          a.showAndWait();
+            if(debug)
             Logger.getLogger(MultiCastSender.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -165,6 +198,7 @@ public class MultiCastSender {
           a.setContentText(ex.getMessage());
 
           a.showAndWait();
+          if(debug)
             Logger.getLogger(MultiCastSender.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Alert a = new Alert(AlertType.ERROR);
@@ -173,6 +207,7 @@ public class MultiCastSender {
           a.setContentText(ex.getMessage());
 
           a.showAndWait();
+          if(debug)
             Logger.getLogger(MultiCastSender.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

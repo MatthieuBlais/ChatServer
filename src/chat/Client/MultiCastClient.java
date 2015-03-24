@@ -18,15 +18,16 @@ public class MultiCastClient {
     private MultiCastSender sender;
     private MultiCastReceiver receiver;
     private Thread thd;
+    private boolean debug;
     
-    public MultiCastClient(TextField txt, Button btn, TextArea area, TextArea bud){
+    public MultiCastClient(TextField txt, Button btn, TextArea area, TextArea bud, boolean d){
         String adress = "224.2.2.2";
         int port = 4000;
-        
-        receiver = new MultiCastReceiver(area,adress,port, bud,this);
+        debug = d;
+        receiver = new MultiCastReceiver(area,adress,port, bud,this,debug);
         thd = new Thread(receiver);
         thd.start();
-        sender = new MultiCastSender(txt, btn, adress, port);
+        sender = new MultiCastSender(txt, btn, adress, port, debug);
     }
     
     public void setExit(){

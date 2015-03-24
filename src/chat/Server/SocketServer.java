@@ -21,17 +21,19 @@ public class SocketServer extends AbstractMultichatServer {
 
     private ServerSocket serverS;
     private GestionServer gestion;
+    private boolean debug;
     
-    
-    public SocketServer(int port, InetAddress address) {
+    public SocketServer(int port, InetAddress address, boolean b) {
         super(port, address);
         try {
             serverS = new ServerSocket(getPort(), 100, getAddress());
             System.out.println("Server is starting...");
             gestion = new GestionServer();
+            debug =b;
          /*   m = synchronizedMap(new HashMap<Socket,BufferedReader>());
             nick = synchronizedMap(new HashMap<Socket,String>());*/
         } catch (IOException ex) {
+            if(debug)
             Logger.getLogger(SocketServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -41,12 +43,13 @@ public class SocketServer extends AbstractMultichatServer {
        while (true) {
            try {
                Socket socket = serverS.accept();
-               SocketClient newClient = new SocketClient(socket,gestion);
+               SocketClient newClient = new SocketClient(socket,gestion,debug);
                gestion.addClient(newClient);
                newClient.startMessage();
                newClient.startReceive();
      //          System.out.println("New client");
            } catch (IOException ioe) {
+               if(debug)
                ioe.printStackTrace();
            }
         }    
@@ -56,6 +59,7 @@ public class SocketServer extends AbstractMultichatServer {
         if (serverS == null)    try {
             serverS.close();
         } catch (IOException ex) {
+            if(debug)
             Logger.getLogger(SocketServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

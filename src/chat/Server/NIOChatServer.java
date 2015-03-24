@@ -5,6 +5,7 @@
  */
 package chat.Server;
 
+import chat.Internationalization;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -34,10 +35,12 @@ public class NIOChatServer extends AbstractMultichatServer implements Runnable {
     private ByteBuffer buf;
     private Map<SocketChannel, String> nickMap;
     private int compteur;
+    private boolean debug;
 
-    public NIOChatServer(int port, InetAddress address) {
+    public NIOChatServer(int port, InetAddress address, boolean b) {
         super(port, address);
         compteur = 0;
+        debug =b;
         nickMap = synchronizedMap(new HashMap<SocketChannel, String>());
     }
 
@@ -82,6 +85,7 @@ public class NIOChatServer extends AbstractMultichatServer implements Runnable {
             }
         } catch (IOException e) {
       //      System.out.println("IOException, server of port " + getPort() + " terminating. Stack trace:");
+            if(debug)
             e.printStackTrace();
         }
 
