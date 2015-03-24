@@ -5,6 +5,10 @@
  */
 package chat;
 
+import chat.Server.NIOChatServer;
+import chat.Server.SocketServer;
+import chat.Client.ClientSocket;
+import chat.Client.MultiCastClient;
 import java.io.BufferedReader;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -76,7 +80,7 @@ public class Chat extends Application {
             Options(args);
 
             if (!end) {
-                System.out.println("okk");
+             //   System.out.println("okk");
                 if(multicast){
                     mcl = new MultiCastClient(message, btn, area, Buddyarea);
                     launch(args);
@@ -86,7 +90,7 @@ public class Chat extends Application {
                     server2 = new NIOChatServer(port, InetAddress.getByName(address));
                     server2.start();
                     if (start) {
-                        System.out.println("pp");
+                //        System.out.println("pp");
                         (new Thread(server2)).start();
                     }
                 } else { 
@@ -96,7 +100,7 @@ public class Chat extends Application {
             s.start();
                     }
                     else{
-                        System.out.println("ok3");
+              //          System.out.println("ok3");
                      //   ChatThread chatt = new ChatThread(client,getMMap(),getNickMap());
                     //    new Thread(chatt).start();
                     }
