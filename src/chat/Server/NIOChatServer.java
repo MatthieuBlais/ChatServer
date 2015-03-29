@@ -42,6 +42,7 @@ public class NIOChatServer extends AbstractMultichatServer implements Runnable {
         compteur = 0;
         debug =b;
         nickMap = synchronizedMap(new HashMap<SocketChannel, String>());
+        System.out.println("sqdkjshfsdkjf");
     }
 
     @Override
@@ -52,6 +53,7 @@ public class NIOChatServer extends AbstractMultichatServer implements Runnable {
         this.selector = Selector.open();
         ssc.register(selector, SelectionKey.OP_ACCEPT);
         buf = ByteBuffer.allocate(5000);
+        System.out.println("deux\n");
     }
 
     /*public void accept() throws IOException{
@@ -114,12 +116,13 @@ public class NIOChatServer extends AbstractMultichatServer implements Runnable {
 
     private void handleAccept(SelectionKey key) throws IOException {
         SocketChannel sc = ((ServerSocketChannel) key.channel()).accept();
-
+        System.out.println("WELCOME");
         nickMap.put(sc, Internationalization.get("my.guest"));
         System.err.println("jai ajoute " + nickMap.get(sc));
 
         sc.configureBlocking(false);
         sc.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE, getAddress());
+        
         sc.write(ByteBuffer.wrap((Internationalization.get("my.welcome") + "\n").getBytes()));
     }
 
@@ -193,7 +196,7 @@ public class NIOChatServer extends AbstractMultichatServer implements Runnable {
            //         System.out.println(msg);
                     msg = msg + "\n";
                     ByteBuffer msgBuf = ByteBuffer.wrap(msg.getBytes());
-                    
+                    System.out.println("ENVOIE");
                     for (Map.Entry<SocketChannel, String> entry : nickMap.entrySet()) {
 
                         SocketChannel c = entry.getKey();

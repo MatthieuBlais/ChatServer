@@ -93,7 +93,7 @@ public class GestionServer{
                 message = tmp[0]+ "~~&~&" + setNick(c) +"@~~@~~ aze";
             } else if(tmp[1].equals("/Iconnect/")){
 
-                System.out.println("BALALALAsdfsdfsd");
+            //    System.out.println("BALALALAsdfsdfsd");
                 message = tmp[0]+ "~~&~&" + setNick(c) +"&~=====>" + setNick(c) +" " + Internationalization.get("my.hasjoin");
 
             } else if(tmp[1].equals("/Ileave/")){

@@ -37,7 +37,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -88,11 +90,14 @@ public class Chat extends Application {
                 }
                 else{
                 if (nio) {
-                    server2 = new NIOChatServer(port, InetAddress.getByName(address),debug);
-                    server2.start();
                     if (start) {
+                        server2 = new NIOChatServer(port, InetAddress.getByName(address),debug);
+                        server2.start();
                 //        System.out.println("pp");
                         (new Thread(server2)).start();
+                    }
+                    else{
+                        System.out.println(Internationalization.get("my.command10"));
                     }
                 } else { 
                     if (start && !client) {
@@ -149,12 +154,14 @@ public class Chat extends Application {
                     break;
                 //
                 case 'h':
-                    System.out.println(Internationalization.get("my.command1") 
+                    System.out.println(Internationalization.get("my.command0") 
+                            +Internationalization.get("my.command1") 
                             + Internationalization.get("my.command2") 
                             + Internationalization.get("my.command3") 
                             + Internationalization.get("my.command4") 
                             + Internationalization.get("my.command5") 
                             + Internationalization.get("my.command6") );
+                    System.exit(0);
                     break;
 
                 case 'n':
@@ -179,15 +186,25 @@ public class Chat extends Application {
                     break;
                 //
                 case ':':
-                    System.out.println("You need an argument for option "
-                            + (char) g.getOptopt());
-                    end = true;
+                   System.out.println(Internationalization.get("my.command0") 
+                            +Internationalization.get("my.command1") 
+                            + Internationalization.get("my.command2") 
+                            + Internationalization.get("my.command3") 
+                            + Internationalization.get("my.command4") 
+                            + Internationalization.get("my.command5") 
+                            + Internationalization.get("my.command6") );
+                    System.exit(0);
                     break;
                 //
                 case '?':
-                    System.out.println("The option '" + (char) g.getOptopt()
-                            + "' is not valid");
-                    end = true;
+                    System.out.println(Internationalization.get("my.command0") 
+                            +Internationalization.get("my.command1") 
+                            + Internationalization.get("my.command2") 
+                            + Internationalization.get("my.command3") 
+                            + Internationalization.get("my.command4") 
+                            + Internationalization.get("my.command5") 
+                            + Internationalization.get("my.command6") );
+                    System.exit(0);
                     break;
                 //
                 default:
@@ -200,10 +217,11 @@ public class Chat extends Application {
                             + Internationalization.get("my.command5") 
                             + Internationalization.get("my.command6") );
                     end = true;
+                    System.exit(0);
                     break;
             }
         }
-        if (!arg) {
+      /*  if (!arg) {
             System.out.println(Internationalization.get("my.command0") 
                     + Internationalization.get("my.command1") 
                     +Internationalization.get("my.command7") 
@@ -214,7 +232,7 @@ public class Chat extends Application {
                             + Internationalization.get("my.command6") );
             end = true;
             
-        }
+        }*/
     }
 
     
@@ -256,12 +274,15 @@ public class Chat extends Application {
          Buddyarea.setPrefWidth(130);
           Buddyarea.setLayoutX(400);
         Buddyarea.setLayoutY(30);
+        root.setStyle("-fx-background-color: #FF9933;");
         root.getChildren().add(btn);
         root.getChildren().add(area);
         root.getChildren().add(welcome);
         root.getChildren().add(message);
         root.getChildren().add(Buddyarea);
-        primaryStage.setScene(new Scene(root, 540, 350));
+        Scene sc = new Scene(root, 540, 350, Color.AQUAMARINE);
+        primaryStage.setResizable(false);
+        primaryStage.setScene(sc);
        try {
            if(multicast)
            mcl = new MultiCastClient(message, btn, area, Buddyarea, debug);
