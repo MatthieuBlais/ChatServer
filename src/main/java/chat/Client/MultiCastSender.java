@@ -75,6 +75,7 @@ public class MultiCastSender {
 
                             socket.send(outPacket);
                         }
+                        txt.setText("");
                     }                
                     socket.close();
                 } catch (UnknownHostException ex) {
