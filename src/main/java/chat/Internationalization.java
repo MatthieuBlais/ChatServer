@@ -18,7 +18,7 @@ public class Internationalization {
     {
         Locale defaultLocale = new Locale("fr","FR");
                 //Locale.getDefault();
-        bundle = ResourceBundle.getBundle("Trad", defaultLocale);
+        bundle = ResourceBundle.getBundle("Trad", Locale.getDefault());
     }
     
     public static String get(String t) 
@@ -26,7 +26,7 @@ public class Internationalization {
         Locale defaultLocale = Locale.getDefault();
         try
         {
-            bundle = ResourceBundle.getBundle("Trad", defaultLocale);
+            bundle = ResourceBundle.getBundle("Trad", Locale.getDefault());
             return bundle.getString(t);
         }
         catch (Exception te)

@@ -69,7 +69,7 @@ public class MultiCastSender {
 
                             socket.send(outPacket);
                         } else {
-                            text = ID + ">/<" + name + "</>" + prev + Internationalization.get("my.change") + name;
+                            text = ID + ">/<" + name + "</>" + prev + " " + Internationalization.get("my.change") + name;
                             outBuf = text.getBytes();
                             outPacket = new DatagramPacket(outBuf, outBuf.length, addresse, port);
 
